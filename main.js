@@ -23,7 +23,7 @@ function setup() {
     canvas.center();
 
     video = createCapture(VIDEO);
-    video.hide;
+    video.hide();
 }
 
 function draw() {
