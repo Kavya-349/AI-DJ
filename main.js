@@ -1,5 +1,11 @@
 var song_names = [];
 
+var leftWristX = 0;
+var leftWristY = 0;
+
+var rightWristX = 0;
+var rightWristY = 0;
+
 function preload() {
     song_names[0].loadSound("Aage Peeche.mp3");
     song_names[1].loadSound("Ankhiyon Se Goli Marre.mp3");
@@ -19,13 +25,33 @@ function preload() {
 }
 
 function setup() {
-    canvas = createCanvas(600, 500);
+    canvas = createCanvas(700, 600);
     canvas.center();
 
     video = createCapture(VIDEO);
     video.hide();
+
+    posenet = ml5.poseNet(video, modalLoaded);
+    posenet.on('pose', gotPoses);
+}
+
+function modalLoaded() {
+    console.log("posenet is initialised");
+}
+
+function gotPoses(answers) {
+    if(answers.length > 0) {
+        leftWristX = answers[0].pose.leftWrist.x;
+        leftWristY = answers[0].pose.leftWrist.y;
+
+        rightWristX = answers[0].pose.rightWrist.x;
+        rightWristY = answers[0].pose.rightWrist.y;
+
+        console.log("Left Wrist X - " + leftWristX + " Left Wrist Y - " + leftWristY 
+        + " Right Wrist X - " + rightWristX + " Right Wrist Y - " + rightWristY);
+    }
 }
 
 function draw() {
-    image(video,0,0,600,500);
+    image(video,0,0,700,600);
 }
